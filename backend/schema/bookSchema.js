@@ -3,9 +3,9 @@ import _ from 'lodash';
 
 // Dummy data
 const books = [
-  { name: 'Name of the Wind', genre: 'Fantasy', id: '1' },
-  { name: 'The Final Empire', genre: 'Fantasy', id: '2' },
-  { name: 'The Long Earth', genre: 'Sci-Fi', id: '3' },
+  { name: 'Name of the Wind', genre: 'Fantasy', id: '1', authorId: '1' },
+  { name: 'The Final Empire', genre: 'Fantasy', id: '2', authorId: '2' },
+  { name: 'The Long Earth', genre: 'Sci-Fi', id: '3', authorId: '3' },
 ];
 
 const authors = [
@@ -14,13 +14,21 @@ const authors = [
     { name: 'Terry Pratchett', age: 66, id: '3' }
 ];
 
+// In resolve function author database is added and id is passed to find relation
 const BookType = new GraphQLObjectType({
   name: 'Book',
-  fields: () => ({
-    id: { type: GraphQLID },
-    name: { type: GraphQLString },
-    genre: { type: GraphQLString },
-  }),
+  fields: ( ) => ({
+      id: { type: GraphQLID },
+      name: { type: GraphQLString },
+      genre: { type: GraphQLString },
+      author: {
+          type: AuthorType,
+          resolve(parent, args){
+              console.log(parent);
+              return _.find(authors, { id: parent.authorId });
+          }
+      }
+  })
 });
 
 const AuthorType = new GraphQLObjectType({
@@ -61,11 +69,12 @@ const bookschema = new GraphQLSchema({
 // how to search in graphQL
 
 // {
-//     book(id: "1") {
-//       id,
-//       name,
-//       genre
+//   book(id: 1){
+//     name,
+//     author{
+//       name
 //     }
 //   }
+// }
 
 export default bookschema;
