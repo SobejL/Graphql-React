@@ -1,11 +1,14 @@
-import { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID, GraphQLInt } from 'graphql';
+import { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID, GraphQLInt, GraphQLList } from 'graphql';
 import _ from 'lodash';
 
 // Dummy data
 const books = [
   { name: 'Name of the Wind', genre: 'Fantasy', id: '1', authorId: '1' },
   { name: 'The Final Empire', genre: 'Fantasy', id: '2', authorId: '2' },
+  { name: 'The Hero of Ages', genre: 'Fantasy', id: '4', authorId: '2' },
   { name: 'The Long Earth', genre: 'Sci-Fi', id: '3', authorId: '3' },
+  { name: 'The Colour of Magic', genre: 'Fantasy', id: '5', authorId: '3' },
+  { name: 'The Light Fantastic', genre: 'Fantasy', id: '6', authorId: '3' },
 ];
 
 const authors = [
@@ -31,13 +34,20 @@ const BookType = new GraphQLObjectType({
   })
 });
 
+// Fetching specific books written by Authors in database. GraphQLList for dealing with lists
 const AuthorType = new GraphQLObjectType({
-    name: 'Author',
-    fields: ( ) => ({
-        id: { type: GraphQLID },
-        name: { type: GraphQLString },
-        age: { type: GraphQLInt }
-    })
+  name: 'Author',
+  fields: ( ) => ({
+      id: { type: GraphQLID },
+      name: { type: GraphQLString },
+      age: { type: GraphQLInt },
+      books: {
+          type: new GraphQLList(BookType),
+          resolve(parent, args){
+              return _.filter(books, { authorId: parent.id });
+          }
+      }
+  })
 });
 
 const RootQuery = new GraphQLObjectType({
@@ -57,7 +67,19 @@ const RootQuery = new GraphQLObjectType({
             resolve(parent, args){
                 return _.find(authors, { id: args.id });
             }
-        }
+        },
+        books: {
+          type: new GraphQLList(BookType),
+          resolve(parent, args){
+              return books;
+          }
+      },
+      authors: {
+          type: new GraphQLList(AuthorType),
+          resolve(parent, args){
+              return authors;
+          }
+      }
     }
 });
 
@@ -69,11 +91,21 @@ const bookschema = new GraphQLSchema({
 // how to search in graphQL
 
 // {
-//   book(id: 1){
+//   author(id: 3){
 //     name,
-//     author{
-//       name
+//     books{
+//       name,
+//       id
 //     }
+//   }
+// }
+
+// search all queries
+
+// {
+//   books{
+//     name,
+//     genre
 //   }
 // }
 
