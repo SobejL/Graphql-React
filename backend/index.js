@@ -3,8 +3,12 @@ import { graphqlHTTP } from 'express-graphql';
 import { schema, root } from './schema/pracSchema.js';
 import  schemaTwo  from './schema/pracTwoSchema.js';
 import bookschema from './schema/bookSchema.js';
+import dotenv from "dotenv"
+import mongoose from 'mongoose'
 
 const app = express();
+
+dotenv.config()
 
 
 app.use(
@@ -32,6 +36,12 @@ app.use('/graphqlThree', graphqlHTTP({
 
 
 
-app.listen(3000, () => {
-  console.log('Server is up and running on port 3000');
-});
+// MONGOOSE SETUP
+const PORT = process.env.PORT || 6001;
+mongoose.connect(process.env.MONGO_URL, {
+    useNewUrlParser:true,
+    useUnifiedTopology: true,
+}).then(()=>{
+    app.listen(PORT,() => console.log(`Server Port: ${PORT}`))
+    
+}).catch((error) => console.log(`${error} did not connect`))
