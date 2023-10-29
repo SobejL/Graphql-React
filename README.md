@@ -1,2 +1,2 @@
-# Graphql-React
-Graphql-React with Apollo project. MERN stack
+# GraphQL-Next
+Next.js-Apollo-GraphQL-MongoDB project
