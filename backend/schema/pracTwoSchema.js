@@ -44,21 +44,5 @@ import {
   
   const schemaTwo = new GraphQLSchema({ query: queryType });
 
-// input into graphQL query
-
-// {
-//     user(id: "a") {
-//       id
-//     }
-//   }  
-
-//     or
-
-// {
-//     user(id: "a") {
-//       id
-//     }
-//   }
-
   export default schemaTwo
   

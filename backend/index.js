@@ -40,7 +40,7 @@ app.use('/graphqlThree', graphqlHTTP({
 
 
 // MONGOOSE SETUP
-const PORT = process.env.PORT || 6001;
+const PORT = process.env.LOCAL_PORT || process.env.PORT;
 mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,

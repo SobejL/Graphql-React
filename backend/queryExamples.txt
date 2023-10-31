@@ -1,0 +1,20 @@
+ how to search in graphQL
+
+ {
+  author(id: 3){
+     name,
+     books{
+       name,
+       id
+     }
+   }
+ }
+
+ search all queries
+
+ {
+   books{
+     name,
+     genre
+   }
+ }
