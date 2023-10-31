@@ -64,15 +64,5 @@ const root = {
   },
 };
 
-// input into url graphlQL query
-
-// mutation {
-//   createMessage(input: {
-//     author: "andy",
-//     content: "hope is a good thing",
-//   }) {
-//     id
-//   }
-// }
 
 export { schema, root };
